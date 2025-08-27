@@ -24,11 +24,11 @@ Expo App (iOS/Android)
 
 ## 🔹 セットアップ
 
-### 1. Expo プロジェクト作成
+### 1. Expo プロジェクト作成（本リポジトリは `firebasetest` を利用）
 
 ```bash
-npx create-expo-app blog-app
-cd blog-app
+npx create-expo-app firebasetest
+cd firebasetest
 npm install firebase react-native-paper expo-router
 ```
 
