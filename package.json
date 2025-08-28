@@ -10,12 +10,14 @@
   },
   "dependencies": {
     "expo": "~53.0.22",
-    "expo-router": "^4.0.14",
+    "expo-router": "~5.1.5",
     "expo-status-bar": "~2.2.3",
     "firebase": "^10.13.0",
     "react": "19.0.0",
-    "react-native": "0.79.6",
-    "react-native-paper": "^5.12.5"
+    "react-native": "0.79.5",
+    "react-native-paper": "^5.12.5",
+    "react-dom": "19.0.0",
+    "react-native-web": "^0.20.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
