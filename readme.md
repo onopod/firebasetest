@@ -24,11 +24,11 @@ Expo App (iOS/Android)
 
 ## 🔹 セットアップ
 
-### 1. Expo プロジェクト作成
+### 1. Expo プロジェクト作成（本リポジトリは `firebasetest` を利用）
 
 ```bash
-npx create-expo-app blog-app
-cd blog-app
+npx create-expo-app firebasetest
+cd firebasetest
 npm install firebase react-native-paper expo-router
 ```
 
@@ -254,21 +254,66 @@ export default function Post() {
 
 ## 🔹 デプロイ（ストア公開）
 
-1. Expo アカウントにログイン
+Expo SDK 53 では Google Play / App Store への公開は **EAS (Expo Application Services)** を利用します。
+
+### 1. EAS CLI のセットアップ
 ```bash
-npx expo login
+npm install -g eas-cli
+eas login
 ```
 
-2. ビルド
+### 2. EAS 設定ファイルの追加
+プロジェクト直下に `eas.json` を用意します（本リポジトリは同梱済み）。
+```json
+{
+  "build": {
+    "production": {
+      "android": { "buildType": "app-bundle" }
+    },
+    "preview": {
+      "android": { "buildType": "apk" }
+    }
+  }
+}
+```
+👉 `app-bundle` は Google Play 提出用の `.aab` を生成します。
+
+### 3. アプリのメタ情報設定（必須）
+`app.json` に `android.package` と `versionCode` を設定してください。
+```jsonc
+{
+  "expo": {
+    "android": {
+      "package": "com.yourname.blogapp", // 一意のパッケージ名
+      "versionCode": 1
+    }
+  }
+}
+```
+※ `android.package` は Play Store 上でユニークである必要があります。
+
+### 4. Android アプリのビルド
 ```bash
-npx expo run:android
-npx expo run:ios
-# または
-npx expo build:android
-npx expo build:ios
+eas build -p android --profile production
+```
+初回は Expo が Keystore（署名鍵）を自動生成します。ビルド完了後、Expo ダッシュボードから `.aab` をダウンロードできます。
+
+プレビュー用に `.apk` を直接配布する場合：
+```bash
+eas build -p android --profile preview
 ```
 
-3. Google Play / App Store へ申請
+### 5. Google Play Console で公開
+1. 開発者登録（年 25 USD）。
+2. 「アプリを作成」→ アプリ名・言語・カテゴリを入力。
+3. 「リリース」セクションでビルドした `.aab` をアップロード。
+4. ストア情報（説明文・スクリーンショット・プライバシーポリシーURL）を登録。
+5. 審査に提出 → 承認後に公開。
+
+✅ まとめ
+- `eas-cli` で `.aab` をビルド
+- `android.package` をユニークに設定
+- Google Play Console に `.aab` を提出
 
 ---
 
